@@ -19,7 +19,8 @@ int startTime = 0; // time starts when the first click is captured
 int finishTime = 0; //records the time of the final click
 int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
-Robot robot; //initialized in setup 
+Robot robot; //initialized in setup
+boolean gameStarted = false; //false
 
 int numRepeats = 1; //sets the number of times each button repeats in the test
 
@@ -61,6 +62,13 @@ void draw()
 {
   background(0); //set background to black
 
+  if(!gameStarted) {
+    fill(255); //set fill color to white
+    text("Click as fast as you can on each flashing blue/red box for a perfect match and accuracy score… Click whenever you're ready!!", width / 2, height / 2); 
+    return; // Don't proceed with the game logic
+  }
+
+
   if (trialNum >= trials.size()) //check to see if test is over
   {
     float timeTaken = (finishTime-startTime) / 1000f;
@@ -89,6 +97,12 @@ void draw()
 
 void mousePressed() // test to see if hit was in target!
 {
+  
+  if(!gameStarted) {
+  gameStarted = true;
+  return; // Only start the game and ignore the rest of the logic for this click
+  }
+  
   if (trialNum >= trials.size()) //if task is over, just return
     return;
 
