@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import processing.core.PApplet;
 
+
 //when in doubt, consult the Processsing reference: https://processing.org/reference/
 
 float delay = 10; // How long the the color stays the same
@@ -21,6 +22,12 @@ int hits = 0; //number of successful clicks
 int misses = 0; //number of missed clicks
 Robot robot; //initialized in setup
 boolean gameStarted = false; //false
+
+//button config to Start game
+int btnWidth = 150;
+int btnHeight = 50;
+int btnX = 0;
+int btnY = 0;
 
 int numRepeats = 1; //sets the number of times each button repeats in the test
 
@@ -63,8 +70,22 @@ void draw()
   background(0); //set background to black
 
   if(!gameStarted) {
+    int instructionsHeight = (160);
     fill(255); //set fill color to white
-    text("Click as fast as you can on each flashing blue/red box for a perfect match and accuracy score… Click whenever you're ready!!", width / 2, height / 2); 
+    text("**Instructions**", width / 2, instructionsHeight); 
+    text("* After each mouse click the flashing blue/red square will move to another square randomly *", width / 2, instructionsHeight + 40); 
+    text("* For a perfect score you will need to Click ONLY on the flashing blue/red square box *", width / 2, instructionsHeight + 80); 
+    fill(255, 0, 0, 200); // set fill color to translucent red
+    text("**- How fast can you go? Can you do it in less than 15 seconds??? -**", width / 2, instructionsHeight + 120);
+    fill(255);
+    fill(0, 0, 255); // blue color for the button background
+    rect((width-btnWidth)/2, instructionsHeight+160, btnWidth, btnHeight);
+    fill(255); // black color for the text
+    text("Start Game", width / 2, instructionsHeight + 190);
+    btnX = (width / 2) - (btnWidth / 2);
+    btnY = (instructionsHeight) + 160;
+
+    
     return; // Don't proceed with the game logic
   }
 
@@ -98,11 +119,14 @@ void draw()
 void mousePressed() // test to see if hit was in target!
 {
   
-  if(!gameStarted) {
-  gameStarted = true;
-  return; // Only start the game and ignore the rest of the logic for this click
+  // only start the game if user clicks in the button range...
+  if (!gameStarted) {
+    if (mouseX > btnX && mouseX < btnX + btnWidth && mouseY > btnY && mouseY < btnY + btnHeight) {
+        gameStarted = true;
+    }
+    return;
   }
-  
+
   if (trialNum >= trials.size()) //if task is over, just return
     return;
 
