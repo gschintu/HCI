@@ -1,2 +1,0 @@
-# HCI
-Human Computer Interaction
